@@ -1,2 +1,2 @@
 # crypthography
-Using the c programming language I am making a simple encryption and decryption tool.
+Using the c programming language I am experimenting with simple encryption and decryption.
