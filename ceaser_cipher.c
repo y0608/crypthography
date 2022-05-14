@@ -38,7 +38,7 @@ char *decypher(char *data, int shift)
     return result;
 }
 
-void decode(char *encrypted)
+void brute_force(char *encrypted)
 {
     printf("\nDecrypting...\n");
     for (int i = 1; i < 25; i++)
@@ -51,7 +51,11 @@ void decode(char *encrypted)
 int main()
 {
     char *encrypted = encypher("hello", 10);
-    printf("%s\n", encrypted);
-    decode(encrypted);
+    printf("Encrypted: %s\n", encrypted);
+    
+    char *decrypted = decrypt("hello", 10);
+    printf("Decrypted: %s\n", decrypted);
+    
+    brute_force(encrypted);
     return 0;
 }
