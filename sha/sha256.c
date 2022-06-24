@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "operations.h"
+// #include "operations.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,16 +45,17 @@ void print(char* input, int size)
     }
 }
 
-void main()
+int main()
 {
-    s1(1);
     char* input_string = "abc";
     int input_len = strlen(input_string),
         blocks = input_len/64;
 
+    //512 bits
     char *block = malloc(64);
     if (!block) return 0;
     memset(block, 0, 64);
+
     char null = 128;
 
     for (int i = 0; i <= blocks; i++)
@@ -78,4 +79,6 @@ void main()
 
         memset(block, 0, 64);
     }
+
+    return 0;
 }
