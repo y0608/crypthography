@@ -33,13 +33,6 @@ void print_binary_number32(uint32_t n)
     cout << "-";
 }
 
-void swap(int *a, int *b)
-{
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
-}
-
 void print(uint8_t *input, int size)
 {
     for (int i = 0; i < size; i++)
@@ -47,7 +40,6 @@ void print(uint8_t *input, int size)
     cout << endl;
 }
 
-// TODO: little and big endian
 int main()
 {
     char a[] = "abc";
@@ -136,22 +128,34 @@ int main()
         for (int i = 0; i < 8; i++)
             state_registers[i] = initial_hash[i];
 
+        // traverse every word from schedule
         for (int i = 0; i < 64; i++)
         {
             // calculate temprary varaibles
             uint32_t tmp1 = S1(state_registers[4]) + CH(state_registers[4], state_registers[5], state_registers[6]) + state_registers[7] + constants[i] + msg_schedule[i],
                      tmp2 = S0(state_registers[0]) + MAJ(state_registers[0], state_registers[1], state_registers[2]);
-            print_binary_number32(tmp1);
-            cout << endl;
-            print_binary_number32(tmp2);
-            // shift array://a b c --- b a c -- c a b -- 0 a b
-            for (int i = 1; i < 8; i++)
-                swap(state_registers[i], state_registers[0]);
+            // print_binary_number32(tmp1);
+            // cout << endl;
+            // print_binary_number32(tmp2);
+            // cout << endl;
+
+            // move everything down
+            state_registers[7] = state_registers[6];
+            state_registers[6] = state_registers[5];
+            state_registers[5] = state_registers[4];
+            state_registers[4] = state_registers[3];
+            state_registers[3] = state_registers[2];
+            state_registers[2] = state_registers[1];
+            state_registers[1] = state_registers[0];
+
             state_registers[0] = tmp1 + tmp2;
+
+            state_registers[4] += tmp1;
         }
+
         for (int i = 0; i < 8; i++)
         {
-            // print_binary_number32(state_registers[i]);
+            print_binary_number32(state_registers[i]);
             cout << endl;
         }
 
@@ -162,5 +166,6 @@ int main()
         // print
         for (int i = 0; i < 8; i++)
             cout << hex << state_registers[i];
+        cout << endl;
     }
 }
