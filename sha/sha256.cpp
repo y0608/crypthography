@@ -2,7 +2,6 @@
 #include <string>
 #include <cstring>
 #include <stdint-gcc.h>
-#include <byteswap.h>
 #include "hash.h"
 using namespace std;
 
@@ -40,18 +39,19 @@ void print(uint8_t *input, int size)
 	cout << endl;
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	uint32_t initial_hash[] = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
 
 	// char input[] = "abc";
-	char input[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+	char *input = argv[1];
+
 	uint64_t input_length = strlen(input);
 	// cout << input_length << endl;
 
 	// 448 bits(56 bytes) of info and 64(8 bytes) for length of message in the last block
 	int number_of_blocks = (input_length + 8) / 64 + 1;
-	// cout << number_of_blocks << endl;
+	cout << (54 + 7) / 64 << endl;
 
 	for (int block_number = 0; block_number < number_of_blocks; block_number++)
 	{
@@ -59,7 +59,8 @@ int main()
 
 		// Copy input into block
 		uint8_t block[64] = {0};
-		for (int input_index = end_of_block - 64, block_index = 0;
+		int input_index = -1, block_index = -1;
+		for (input_index = end_of_block - 64, block_index = 0;
 			 input_index < end_of_block && input_index < input_length;
 			 input_index++, block_index++)
 			block[block_index] = input[input_index];
@@ -69,7 +70,6 @@ int main()
 		{
 			// Add 1 between msg and padded 0s
 			block[input_length % 64] = 128;
-			// TODO: check if it is needed to pad
 
 			//  Padd with 0s until 56th byte - already padded because block is full of 0s at the start
 
@@ -81,8 +81,11 @@ int main()
 				bit_length >>= 8;
 			}
 		}
+		else if (block_index != end_of_block)
+			block[block_index] = 128;
 
-		// CREATE MESSAGE SCHEUDLE:
+		
+		// Create message scheudle:
 		uint32_t msg_schedule[64];
 		uint32_t current_word = 0;
 
@@ -119,6 +122,7 @@ int main()
 			msg_schedule[msg_schedule_index] = s1(msg_schedule[msg_schedule_index - 2]) + msg_schedule[msg_schedule_index - 7] + s0(msg_schedule[msg_schedule_index - 15]) + msg_schedule[msg_schedule_index - 16];
 			// print_binary_number32(msg_schedule[msg_schedule_index]);
 		}
+
 
 		// COPMRESSION:
 
@@ -159,6 +163,10 @@ int main()
 			state_registers[i] += initial_hash[i];
 			// update initial_hash
 			initial_hash[i] = state_registers[i];
+
+			cout << i << ": ";
+			print_binary_number32(initial_hash[i]);
+			cout << endl;
 		}
 
 		print(block, 64);
