@@ -1,5 +1,3 @@
-//https://en.wikipedia.org/wiki/Caesar_cipher
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
