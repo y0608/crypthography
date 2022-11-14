@@ -1,6 +1,3 @@
-// https://www.boxentriq.com/code-breaking/rail-fence-cipher
-// https://crypto.interactive-maths.com/rail-fence-cipher.html
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +8,7 @@ void swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
+
 void print_table(char *table, int width, int height)
 {
     char *result = malloc(width + 1);
@@ -26,6 +24,7 @@ void print_table(char *table, int width, int height)
         printf("\n");
     }
 }
+
 char *encrypt(char *data, int height)
 {
     int width = strlen(data);
@@ -60,6 +59,7 @@ char *encrypt(char *data, int height)
 
     result[strlen(result)] = 0;
     free(table);
+    
     return result;
 }
 
