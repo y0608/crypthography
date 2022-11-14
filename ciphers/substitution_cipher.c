@@ -13,6 +13,7 @@ void swap(char *a, char *b)
     *a = *b;
     *b = temp;
 }
+
 char *generate_char_array(int iterations)
 {
     srand(time(0));  
@@ -26,7 +27,7 @@ char *generate_char_array(int iterations)
     return result;
 }
 
-char *encypher(char *data)
+char *encipher(char *data)
 {
     char *result = malloc(sizeof(char) * strlen(data));
 
@@ -35,14 +36,13 @@ char *encypher(char *data)
         int j = 0;
         while (input_array[j] != data[i])
             j++;
-
         result[i] = mixed_array[j];
     }
 
     return result;
 }
 
-char *decypher(char *data)
+char *decipher(char *data)
 {
     char *result = malloc(sizeof(char) * strlen(data));
 
@@ -64,10 +64,10 @@ int main()
 
     char *data = "hello worldz";
 
-    char *encrypted = encypher(data);
+    char *encrypted = encipher(data);
     printf("%s\n", encrypted);
 
-    char *decrypted = decypher(encrypted);
+    char *decrypted = decipher(encrypted);
     printf("%s\n", decrypted);
 
     return 0;
