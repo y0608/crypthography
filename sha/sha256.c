@@ -40,13 +40,16 @@ void print(uint8_t *input, int size)
 
 int main(int argc, char **argv)
 {
-    uint32_t initial_hash[] = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
+    uint32_t initial_hash[] = {
+        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 
+        0xa54ff53a, 0x510e527f, 0x9b05688c, 
+        0x1f83d9ab, 0x5be0cd19
+    };
 
     // char input[] = "abc";
     char *input = argv[1];
 
     uint64_t input_length = strlen(input);
-    // cout << input_length << endl;
 
     // 448 bits(56 bytes) of info and 64(8 bytes) for length of message in the last block
     int number_of_blocks = (input_length + 8) / 64 + 1;
@@ -69,7 +72,7 @@ int main(int argc, char **argv)
             // Add 1 between msg and padded 0s
             block[input_length % 64] = 128;
 
-            //  Padd with 0s until 56th byte - already padded because block is full of 0s at the start
+            // Padd with 0s until 56th byte - already padded because block is full of 0s at the start
 
             // Add the length of the message in the last 64 bits(8 bytes)
             int bit_length = input_length * 8;
